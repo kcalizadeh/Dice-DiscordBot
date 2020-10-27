@@ -36,9 +36,12 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content[0:3] == '~d ':
-        try:
+    if message.content[0:3] == '~d ' or message.content[0:3] == '~r ' or message.content[0:5] == '~roll':
+        if message.content[0:3] == '~d ' or message.content[0:3] == '~r ':
             their_roll = message.content[3:].lower()
+        if message.content[0:5] == '~roll':
+            their_roll = message.content[5:].lower()
+        try:
             roll_list = roll_them_dice(their_roll)
                 
             for roll in roll_list:
@@ -50,6 +53,8 @@ async def on_message(message):
                     pass
         except:
             await message.channel.send(f'{message.author.mention} - sorry, your input was not recognized')
+
+    
         
 
 client.run(TOKEN)
