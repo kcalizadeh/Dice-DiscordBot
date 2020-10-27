@@ -20,17 +20,6 @@ TOKEN = keys['bot_token'] #''NzMzMzYxNDkxNDYxNDA2ODU5.XxCCHA.C4H6u1m6KohrrsCa7Z-
 
 client = discord.Client()
 
-# @client.event
-# async def on_ready():
-#     for guild in client.guilds:
-#         if guild.name == GUILD:
-#             break
-
-#     print(
-#         f'{client.user} is connected to the following guild:\n'
-#         f'{guild.name}(id: {guild.id})'
-#     )
-
 @client.event
 async def on_message(message):
     if message.author == client.user:
