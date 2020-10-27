@@ -98,8 +98,6 @@ def roll_dice(dice_count, dice_sides, advantage):
             fails, hits = count_criticals(rolls)
         return rolls, fails, hits
 
-
-
 def roll_them_dice(user_input_string):
     to_roll = split_input(user_input_string)
     roll_list = []
@@ -130,7 +128,7 @@ def roll_them_dice(user_input_string):
 
     for roll in roll_list:
 # for very simple rolls of a single dice with no modifiers or advantage
-        if roll['dice_count'] == 1 and roll['is_modifier'] == 0 and roll['modifier'] == 0 and roll['has_dice_modifier'] == 0 and roll['advantage'] == 0:
+        if roll['dice_count'] == 1 and roll['is_modifier'] == 0 and roll['modifier'] == 0 and roll['has_dice_modifier'] == 0 and roll['advantage'] == 0 and roll['dice_sides'] != 20:
             result_string = str((roll['result']))[1:-1]
             message = f' rolled **{result_string}**.'
             roll['message'] = message
@@ -182,7 +180,7 @@ def roll_them_dice(user_input_string):
                 outcomes = [x.min() for x in roll['result']]
             final_outcomes = np.array(outcomes) + total_modifier
             final_outcomes_statement = str(list(final_outcomes))[1:-1].strip().replace('  ', ' ').replace(' ', ' & ')
-            final_outcomes_formatted = final_outcomes_statement.replace(' & ', '** & **')
+            final_outcomes_formatted = final_outcomes_statement.replace(' & ', '** & **').replace(',', ' ')
             # make a string for modifiers
             modifier_string = ''
             if roll['modifier'] != 0:
@@ -203,7 +201,7 @@ def roll_them_dice(user_input_string):
                     else:
                         sum_statement += f'(**{roll_tuple.min()}** , {roll_tuple.max()}){modifier_string} = {final_outcomes[i]}'
             message = f' rolled **{final_outcomes_formatted}**. ({sum_statement})'
-            fails, hits = count_criticals(roll['result'])
+            fails, hits = count_criticals(np.array(outcomes))
             message = comment_criticals(message, fails, hits)
             roll['message'] = message
 
@@ -228,7 +226,7 @@ def roll_them_dice(user_input_string):
             if modifier_2 != 0:
                 modifier_string += f' + {str(modifier_2)}'
             sum_statement = ''
-            if len(roll['result']) > 1 and modifier_string != '':
+            if modifier_string != '':
                 for i in range(0, len(roll['result'])):
                     result_str = str(roll['result'][i])
                     if i != len(roll['result'])-1:
